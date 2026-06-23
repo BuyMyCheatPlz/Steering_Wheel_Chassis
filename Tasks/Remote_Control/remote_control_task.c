@@ -43,13 +43,25 @@ void RemoteControlTask_Init(void)
   *           失联保护状态机永远不会被调用，急停失效。
   *           修复后: 无论 rc_state.connected 为何，每周期都调用
   *           LossProtectionTick，确保失联状态机独立运行。
+  *
+  *         修复 P2 (2024 诊断):
+  *           osWaitForever → 10ms 超时。原代码用 osWaitForever 阻塞等待
+  *           DBUS 帧信号量，遥控器失联后不再有帧 → 任务永久阻塞 →
+  *           LossProtectionTick 永远不被调用 → 急停失效。
+  *           改为 10ms 超时后，即使无 DBUS 帧，任务也每 10ms 唤醒一次
+  *           执行失联保护检查（REMOTE_TIMEOUT_MS=50ms 超时判定失联，
+  *           REMOTE_ESTOP_HOLD_MS=200ms 后关断电流）。
   */
 void Receive_and_Process_Signal(void *argument)
 {
     for (;;)
     {
-        /* 等待 DBUS 帧解析完成信号量 */
-        osSemaphoreAcquire(DbusReadyHandle, osWaitForever);
+        /*
+         * 等待 DBUS 帧信号量，10ms 超时
+         * - osOK:           收到新 DBUS 帧
+         * - osErrorTimeout: 10ms 内无帧，仍执行失联保护检查
+         */
+        osStatus_t status = osSemaphoreAcquire(DbusReadyHandle, 10U);
 
         RemoteState rc_state;
         RemoteControl_GetState(&rc_state);
@@ -64,18 +76,26 @@ void Receive_and_Process_Signal(void *argument)
         {
             /*
              * N1 修复: 急停恢复确认
-             * 编码器已恢复 + 遥控器在线 + SW1拨到UP → 确认恢复
+             * 编码器已恢复 + 收到新 DBUS 帧 + 遥控器在线 + SW1拨到UP → 确认恢复
+             *
+             * H2 修复: 增加 status == osOK 条件
+             * cached_state.connected 从未被清零，失联后保持旧值 1
+             * 若不要求新帧，stale 数据即可触发恢复，绕过手动确认的安全设计
              */
             if (SteeringChassis_GetState() == CHASSIS_ESTOP_RECOVER &&
+                status == osOK &&
                 rc_state.connected && rc_state.sw1 == SWITCH_UP)
             {
                 SteeringChassis_Recover();
             }
 
-            /* 在线/保持急停：正常控制 */
-            if (rc_state.connected)
+            /*
+             * 在线且收到新帧: 映射通道到速度 → 写入队列传递至运动任务
+             * status == osOK 确保仅在收到新 DBUS 帧时发送，避免超时唤醒
+             * 时重复入队 stale 数据
+             */
+            if (rc_state.connected && status == osOK)
             {
-                /* 正常在线：映射通道到速度 → 写入队列传递至运动任务 */
                 float vx = rc_state.ly * REMOTE_VEL_MAX_XY;
                 float vy = rc_state.lx * REMOTE_VEL_MAX_XY;
                 float wz = rc_state.ry * REMOTE_VEL_MAX_WZ;

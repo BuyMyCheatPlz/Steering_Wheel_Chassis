@@ -22,7 +22,6 @@
 #define MOTOR_ID_STEER_BASE     5       /* 舵向电机 ID 起始 (5,6,7,8) */
 #define MOTOR_ID_DRIVE_BASE     1       /* 驱动电机 ID 起始 (1,2,3,4) */
 #define RAD2DEG                 57.295779513f
-#define DEG2RAD                 0.01745329252f
 
 /*
  * 最短路径反转滞回阈值 (度)
@@ -48,6 +47,12 @@ static float g_vx = 0.0f, g_vy = 0.0f, g_wz = 0.0f;
 
 /* 状态机 */
 static ChassisState g_state = CHASSIS_HOMING;
+
+/* 各轮零位偏移 (度) — SteeringChassis_Init 与 ReadEncoders 共用 */
+static const float g_steer_offsets[WHEEL_COUNT] = {
+    STEER_OFFSET_1, STEER_OFFSET_2,
+    STEER_OFFSET_3, STEER_OFFSET_4
+};
 
 /*
  * P0-1 修复: PID 控制器改为每轮独立实例
@@ -94,6 +99,12 @@ void SteeringChassis_Init(SoftI2C_Bus *i2c_buses[4],
 {
     uint8_t i;
 
+    /* 初始化 4 路软 I2C 总线（置空闲电平 + 校验延时参数） */
+    for (i = 0; i < WHEEL_COUNT; i++)
+    {
+        SoftI2C_Init(i2c_buses[i]);
+    }
+
     /* 初始化 MT6701 编码器设备 */
     for (i = 0; i < WHEEL_COUNT; i++)
     {
@@ -120,10 +131,6 @@ void SteeringChassis_Init(SoftI2C_Bus *i2c_buses[4],
         STEER_INIT_RAW_1, STEER_INIT_RAW_2,
         STEER_INIT_RAW_3, STEER_INIT_RAW_4
     };
-    const float offsets[WHEEL_COUNT] = {
-        STEER_OFFSET_1, STEER_OFFSET_2,
-        STEER_OFFSET_3, STEER_OFFSET_4
-    };
 
     for (i = 0; i < WHEEL_COUNT; i++)
     {
@@ -131,7 +138,7 @@ void SteeringChassis_Init(SoftI2C_Bus *i2c_buses[4],
         float raw_deg = (float)init_raw[i] / MT6701_RESOLUTION * 360.0f;
         /* 减去零位偏移，归一化到 [0, 360) */
         g_wheel[i].homing_target_angle =
-            NormalizeAngle(raw_deg - offsets[i]);
+            NormalizeAngle(raw_deg - g_steer_offsets[i]);
     }
 
     /*
@@ -240,10 +247,6 @@ void SteeringChassis_EmergencyStop(void)
         PID_Reset(&g_steer_pos_pid[i]);
         PID_Reset(&g_steer_vel_pid[i]);
         PID_Reset(&g_drive_vel_pid[i]);
-    }
-    /* H1 修复: 每轮独立回正 PID 实例 */
-    for (i = 0; i < WHEEL_COUNT; i++)
-    {
         PID_Reset(&g_homing_pos_pid[i]);
     }
 
@@ -550,12 +553,6 @@ static void ReadEncoders(void)
     float    angle;
     uint8_t  fail_count = 0;
 
-    /* 各轮零位偏移 (来自 config.h) */
-    const float offsets[WHEEL_COUNT] = {
-        STEER_OFFSET_1, STEER_OFFSET_2,
-        STEER_OFFSET_3, STEER_OFFSET_4
-    };
-
     for (i = 0; i < WHEEL_COUNT; i++)
     {
         /* 使用 MT6701 驱动库读取角度 */
@@ -566,7 +563,7 @@ static void ReadEncoders(void)
             /* 获取角度并应用零位偏移 */
             angle = g_mt6701_dev[i].angle_degrees;
             g_wheel[i].encoder_angle =
-                NormalizeAngle(angle - offsets[i]);
+                NormalizeAngle(angle - g_steer_offsets[i]);
 
             g_wheel[i].encoder_valid = 1;
             g_wheel[i].encoder_fail_count = 0;
@@ -878,7 +875,9 @@ void SteeringChassis_GetWheelDebug(float steer_angle[4],
                                    float drive_rpm[4],
                                    float drive_target[4])
 {
-    for (int i = 0; i < WHEEL_COUNT; i++)
+    uint8_t i;
+
+    for (i = 0; i < WHEEL_COUNT; i++)
     {
         steer_angle[i]  = g_wheel[i].encoder_angle;
         steer_target[i] = g_wheel[i].target_steer_angle;

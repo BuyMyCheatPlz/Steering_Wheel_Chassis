@@ -76,7 +76,14 @@ void M3508_Init(CAN_HandleTypeDef *hcan)
     sFilterConfig.FilterScale          = CAN_FILTERSCALE_32BIT;
     sFilterConfig.FilterIdHigh         = 0x201 << 5;    /* Filter[31:16]: STDID=0x201 */
     sFilterConfig.FilterIdLow          = 0x0000;         /* Filter[15:0]: IDE=0, RTR=0 */
-    sFilterConfig.FilterMaskIdHigh     = 0x00FF;         /* Mask[31:16]: 忽略 STDID[7:0] (匹配 0x200-0x2FF) */
+    /*
+     * H1 修复: FilterMaskIdHigh 0x00FF → 0x01FF
+     * 原掩码仅忽略 STDID[2:0]，匹配范围 0x200-0x207
+     * 电机 8 反馈帧 0x208 的 STDID[3]=1 被遗漏
+     * 改为忽略 STDID[3:0] 后硬件匹配 0x200-0x20F，
+     * 软件层 M3508_RxCallback 再做精确过滤 (0x201-0x208)
+     */
+    sFilterConfig.FilterMaskIdHigh     = 0x01FF;
     sFilterConfig.FilterMaskIdLow      = 0xFFF8;         /* Mask[15:3]=1忽略EXID, [2:1]=0匹配IDE/RTR */
     sFilterConfig.FilterFIFOAssignment = CAN_FILTER_FIFO0;
     sFilterConfig.FilterActivation     = ENABLE;
@@ -223,9 +230,12 @@ void M3508_RxCallback(CAN_HandleTypeDef *hcan)
          *   [4-5] 实际转矩电流 (int16, mA)
          *   [6-7] 保留
          */
-        m3508_feedback[motor_id].encoder = ((uint16_t)rx_data[0] << 8) | rx_data[1];
-        m3508_feedback[motor_id].rpm     = (int16_t)(((uint16_t)rx_data[2] << 8) | rx_data[3]);
-        m3508_feedback[motor_id].current = (int16_t)(((uint16_t)rx_data[4] << 8) | rx_data[5]);
+        m3508_feedback[motor_id].encoder = ((uint16_t)rx_data[M3508_FB_ANGLE_OFFSET] << 8)
+                                         |  rx_data[M3508_FB_ANGLE_OFFSET + 1];
+        m3508_feedback[motor_id].rpm     = (int16_t)(((uint16_t)rx_data[M3508_FB_SPEED_OFFSET] << 8)
+                                                     |  rx_data[M3508_FB_SPEED_OFFSET + 1]);
+        m3508_feedback[motor_id].current = (int16_t)(((uint16_t)rx_data[M3508_FB_CURRENT_OFFSET] << 8)
+                                                     |  rx_data[M3508_FB_CURRENT_OFFSET + 1]);
         m3508_feedback[motor_id].updated = 1;
     }
 }

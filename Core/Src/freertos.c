@@ -105,9 +105,6 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
   /* 初始化运动控制子系统（M3508 + MT6701 + 舵轮底盘） */
   Movement_Init();
-
-  /* 初始化遥控子系统（DBUS 驱动 + DMA 空闲接收） */
-  RemoteControlTask_Init();
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -132,6 +129,13 @@ void MX_FREERTOS_Init(void) {
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
+
+  /*
+   * 遥控子系统初始化必须放在信号量和队列创建之后，
+   * 否则 UART IDLE 中断可能在 DbusReadyHandle 有效前触发，
+   * ISR 中 xSemaphoreGiveFromISR(NULL) → HardFault
+   */
+  RemoteControlTask_Init();
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
