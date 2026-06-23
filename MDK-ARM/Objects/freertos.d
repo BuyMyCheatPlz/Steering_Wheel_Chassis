@@ -50,3 +50,4 @@ objects\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 objects\freertos.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 objects\freertos.o: ../Core/Inc/usart.h
 objects\freertos.o: ../Tasks/Vofa_Transmit/vofa_transmit_task.h
+objects\freertos.o: ../Core/Src/../../Hardwares/config.h

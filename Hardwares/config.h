@@ -106,29 +106,58 @@ extern "C" {
 #define ENCODER_MAX_FAIL_COUNT  10      /* 连续失败次数阈值 */
 
 /*==============================================================================
- * 14. PID — 舵向位置环（外环）
+ * 14. PID — 舵向位置环（外环，每轮独立 Kp/Ki/Kd）
+ *     轮1/4 减速比 14:1，轮2/3 减速比 19:1，允许差异化调参
  *============================================================================*/
-#define STEER_POS_KP            8.0f
-#define STEER_POS_KI            0.2f
-#define STEER_POS_KD            0.0f
-#define STEER_POS_INTEGRAL_MAX  500.0f  /* 积分限幅 */
-#define STEER_POS_OUTPUT_MAX    1000.0f /* 输出限幅 (目标转速 dps) */
+#define STEER_POS_KP_1          8.0f
+#define STEER_POS_KP_2          8.0f
+#define STEER_POS_KP_3          8.0f
+#define STEER_POS_KP_4          8.0f
+#define STEER_POS_KI_1          0.2f
+#define STEER_POS_KI_2          0.2f
+#define STEER_POS_KI_3          0.2f
+#define STEER_POS_KI_4          0.2f
+#define STEER_POS_KD_1          0.0f
+#define STEER_POS_KD_2          0.0f
+#define STEER_POS_KD_3          0.0f
+#define STEER_POS_KD_4          0.0f
+#define STEER_POS_INTEGRAL_MAX  500.0f  /* 积分限幅（统一） */
+#define STEER_POS_OUTPUT_MAX    1000.0f /* 输出限幅 (目标转速 dps)（统一） */
 
 /*==============================================================================
- * 15. PID — 舵向速度环（内环）
+ * 15. PID — 舵向速度环（内环，每轮独立 Kp/Ki/Kd）
  *============================================================================*/
-#define STEER_VEL_KP            10.0f
-#define STEER_VEL_KI            0.5f
-#define STEER_VEL_KD            0.0f
-#define STEER_VEL_INTEGRAL_MAX  5000.0f /* 积分限幅 */
-#define STEER_VEL_OUTPUT_MAX    16384.0f/* 输出限幅 (mA) */
+#define STEER_VEL_KP_1          10.0f
+#define STEER_VEL_KP_2          10.0f
+#define STEER_VEL_KP_3          10.0f
+#define STEER_VEL_KP_4          10.0f
+#define STEER_VEL_KI_1          0.5f
+#define STEER_VEL_KI_2          0.5f
+#define STEER_VEL_KI_3          0.5f
+#define STEER_VEL_KI_4          0.5f
+#define STEER_VEL_KD_1          0.0f
+#define STEER_VEL_KD_2          0.0f
+#define STEER_VEL_KD_3          0.0f
+#define STEER_VEL_KD_4          0.0f
+#define STEER_VEL_INTEGRAL_MAX  5000.0f /* 积分限幅（统一） */
+#define STEER_VEL_OUTPUT_MAX    16384.0f/* 输出限幅 (mA)（统一） */
 
 /*==============================================================================
- * 16. PID — 驱动速度环
+ * 16. PID — 驱动速度环（每轮独立 Kp/Ki/Kd）
+ *     轮1/4 减速比 14:1，轮2/3 减速比 19:1，需要不同 PID
  *============================================================================*/
-#define DRIVE_VEL_KP            8.0f
-#define DRIVE_VEL_KI            0.3f
-#define DRIVE_VEL_KD            0.0f
+#define DRIVE_VEL_KP_1          8.0f
+#define DRIVE_VEL_KP_2          8.0f
+#define DRIVE_VEL_KP_3          8.0f
+#define DRIVE_VEL_KP_4          8.0f
+#define DRIVE_VEL_KI_1          0.3f
+#define DRIVE_VEL_KI_2          0.3f
+#define DRIVE_VEL_KI_3          0.3f
+#define DRIVE_VEL_KI_4          0.3f
+#define DRIVE_VEL_KD_1          0.0f
+#define DRIVE_VEL_KD_2          0.0f
+#define DRIVE_VEL_KD_3          0.0f
+#define DRIVE_VEL_KD_4          0.0f
 #define DRIVE_VEL_INTEGRAL_MAX  5000.0f
 #define DRIVE_VEL_OUTPUT_MAX    16384.0f
 
@@ -170,6 +199,15 @@ extern "C" {
 /* 最大运动速度 */
 #define REMOTE_VEL_MAX_XY        3.0f    /* 最大平动速度 (m/s) */
 #define REMOTE_VEL_MAX_WZ        6.283f  /* 最大旋转角速度 (rad/s, ≈1rps) */
+
+/*==============================================================================
+ * 19. 底盘速度指令结构体（队列元素）
+ *============================================================================*/
+typedef struct {
+    float vx;   /* X 方向速度 (m/s) */
+    float vy;   /* Y 方向速度 (m/s) */
+    float wz;   /* 旋转角速度 (rad/s) */
+} ChassisVelocityCmd;
 
 #ifdef __cplusplus
 }

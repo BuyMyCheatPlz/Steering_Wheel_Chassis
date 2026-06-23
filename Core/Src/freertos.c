@@ -28,17 +28,8 @@
 #include "movement_task.h"
 #include "remote_control_task.h"
 #include "vofa_transmit_task.h"
+#include "../../Hardwares/config.h"
 /* USER CODE END Includes */
-
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
-/* 底盘速度指令（队列元素） */
-typedef struct {
-    float vx;
-    float vy;
-    float wz;
-} ChassisVelocityCmd;
-/* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */

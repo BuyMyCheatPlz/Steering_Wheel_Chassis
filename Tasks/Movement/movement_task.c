@@ -14,13 +14,6 @@
 /* 外部引用 — freertos.c 中 CubeMX 生成的队列句柄 */
 extern osMessageQueueId_t Signal_QueueHandle;
 
-/* 速度指令队列元素（与 freertos.c 中定义一致） */
-typedef struct {
-    float vx;
-    float vy;
-    float wz;
-} ChassisVelocityCmd;
-
 /* Private variables ---------------------------------------------------------*/
 static uint8_t initialized = 0;
 

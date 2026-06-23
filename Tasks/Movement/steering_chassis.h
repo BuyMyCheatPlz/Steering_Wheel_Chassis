@@ -14,7 +14,7 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "../../config.h"
+#include "../../Hardwares/config.h"
 #include "m3508.h"
 #include "soft_i2c.h"
 #include <stdint.h>

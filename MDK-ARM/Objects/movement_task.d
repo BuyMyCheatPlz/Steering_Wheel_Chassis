@@ -46,7 +46,6 @@ objects\movement_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 objects\movement_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 objects\movement_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 objects\movement_task.o: ..\Tasks\Movement\steering_chassis.h
-objects\movement_task.o: ..\Tasks\Movement\../../config.h
+objects\movement_task.o: ..\Tasks\Movement\../../Hardwares/config.h
 objects\movement_task.o: ../Hardwares/M3508/m3508.h
-objects\movement_task.o: ../Hardwares/config.h
 objects\movement_task.o: ../Hardwares/I2c_Soft/soft_i2c.h

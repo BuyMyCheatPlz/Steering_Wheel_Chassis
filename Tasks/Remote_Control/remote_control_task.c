@@ -15,13 +15,6 @@
 extern osSemaphoreId_t DbusReadyHandle;
 extern osMessageQueueId_t Signal_QueueHandle;
 
-/* 速度指令队列元素 */
-typedef struct {
-    float vx;
-    float vy;
-    float wz;
-} ChassisVelocityCmd;
-
 /*==============================================================================
  * 公共函数实现
  *============================================================================*/

@@ -33,10 +33,9 @@ objects\steering_chassis.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pw
 objects\steering_chassis.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 objects\steering_chassis.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
 objects\steering_chassis.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
-objects\steering_chassis.o: ..\Tasks\Movement\../../config.h
+objects\steering_chassis.o: ..\Tasks\Movement\../../Hardwares/config.h
 objects\steering_chassis.o: ../Hardwares/M3508/m3508.h
 objects\steering_chassis.o: ../Core/Inc/can.h
-objects\steering_chassis.o: ../Hardwares/config.h
 objects\steering_chassis.o: ../Hardwares/I2c_Soft/soft_i2c.h
 objects\steering_chassis.o: ../Hardwares/MT6701/mt6701.h
 objects\steering_chassis.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

@@ -11,7 +11,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "steering_chassis.h"
 #include "mt6701.h"
-#include "../../config.h"
+#include "../../Hardwares/config.h"
 #include <math.h>
 #include <string.h>
 
@@ -134,21 +134,52 @@ void SteeringChassis_Init(SoftI2C_Bus *i2c_buses[4],
             NormalizeAngle(raw_deg - offsets[i]);
     }
 
-    /* P0-1 修复: 初始化 12 个独立 PID 实例 (3组 × 4轮) */
+    /*
+     * P0-1 修复: 初始化 12 个独立 PID 实例 (3组 × 4轮)
+     * 每轮使用独立的 Kp/Ki/Kd（config.h 中可独立配置，适配不同减速比）
+     */
+    const float steer_pos_kp[WHEEL_COUNT] = {
+        STEER_POS_KP_1, STEER_POS_KP_2, STEER_POS_KP_3, STEER_POS_KP_4
+    };
+    const float steer_pos_ki[WHEEL_COUNT] = {
+        STEER_POS_KI_1, STEER_POS_KI_2, STEER_POS_KI_3, STEER_POS_KI_4
+    };
+    const float steer_pos_kd[WHEEL_COUNT] = {
+        STEER_POS_KD_1, STEER_POS_KD_2, STEER_POS_KD_3, STEER_POS_KD_4
+    };
+    const float steer_vel_kp[WHEEL_COUNT] = {
+        STEER_VEL_KP_1, STEER_VEL_KP_2, STEER_VEL_KP_3, STEER_VEL_KP_4
+    };
+    const float steer_vel_ki[WHEEL_COUNT] = {
+        STEER_VEL_KI_1, STEER_VEL_KI_2, STEER_VEL_KI_3, STEER_VEL_KI_4
+    };
+    const float steer_vel_kd[WHEEL_COUNT] = {
+        STEER_VEL_KD_1, STEER_VEL_KD_2, STEER_VEL_KD_3, STEER_VEL_KD_4
+    };
+    const float drive_vel_kp[WHEEL_COUNT] = {
+        DRIVE_VEL_KP_1, DRIVE_VEL_KP_2, DRIVE_VEL_KP_3, DRIVE_VEL_KP_4
+    };
+    const float drive_vel_ki[WHEEL_COUNT] = {
+        DRIVE_VEL_KI_1, DRIVE_VEL_KI_2, DRIVE_VEL_KI_3, DRIVE_VEL_KI_4
+    };
+    const float drive_vel_kd[WHEEL_COUNT] = {
+        DRIVE_VEL_KD_1, DRIVE_VEL_KD_2, DRIVE_VEL_KD_3, DRIVE_VEL_KD_4
+    };
+
     for (i = 0; i < WHEEL_COUNT; i++)
     {
         /* H3 修复: 启用 STEER_DEADBAND_DEG 死区 */
         PID_Init(&g_steer_pos_pid[i],
-                 STEER_POS_KP, STEER_POS_KI, STEER_POS_KD,
+                 steer_pos_kp[i], steer_pos_ki[i], steer_pos_kd[i],
                  STEER_POS_INTEGRAL_MAX, STEER_POS_OUTPUT_MAX,
                  STEER_DEADBAND_DEG);
 
         PID_Init(&g_steer_vel_pid[i],
-                 STEER_VEL_KP, STEER_VEL_KI, STEER_VEL_KD,
+                 steer_vel_kp[i], steer_vel_ki[i], steer_vel_kd[i],
                  STEER_VEL_INTEGRAL_MAX, STEER_VEL_OUTPUT_MAX, 0.0f);
 
         PID_Init(&g_drive_vel_pid[i],
-                 DRIVE_VEL_KP, DRIVE_VEL_KI, DRIVE_VEL_KD,
+                 drive_vel_kp[i], drive_vel_ki[i], drive_vel_kd[i],
                  DRIVE_VEL_INTEGRAL_MAX, DRIVE_VEL_OUTPUT_MAX, 0.0f);
     }
 
@@ -161,9 +192,9 @@ void SteeringChassis_Init(SoftI2C_Bus *i2c_buses[4],
     for (i = 0; i < WHEEL_COUNT; i++)
     {
         PID_Init(&g_homing_pos_pid[i],
-                 STEER_POS_KP * 0.5f,
-                 STEER_POS_KI * 0.5f,
-                 STEER_POS_KD,
+                 steer_pos_kp[i] * 0.5f,
+                 steer_pos_ki[i] * 0.5f,
+                 steer_pos_kd[i],
                  STEER_POS_INTEGRAL_MAX * 0.5f,
                  STEER_POS_OUTPUT_MAX * 0.5f,
                  HOMING_THRESHOLD_DEG);
@@ -733,12 +764,6 @@ static void ComputeSteerPID(uint8_t wheel_idx)
 
     /* P0-1 修复: 使用独立 PID 实例 */
     vel_target = PID_Compute(&g_steer_pos_pid[wheel_idx], error, CONTROL_DT);
-
-    /* 转速限幅 */
-    if (vel_target > STEER_POS_OUTPUT_MAX)
-        vel_target = STEER_POS_OUTPUT_MAX;
-    else if (vel_target < -STEER_POS_OUTPUT_MAX)
-        vel_target = -STEER_POS_OUTPUT_MAX;
 
     g_wheel[wheel_idx].steer_vel_target = vel_target;
 

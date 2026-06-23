@@ -47,8 +47,7 @@ objects\vofa_transmit_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_
 objects\vofa_transmit_task.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 objects\vofa_transmit_task.o: ../Hardwares/Vofa_Send/vofa_send.h
 objects\vofa_transmit_task.o: ../Tasks/Movement/steering_chassis.h
-objects\vofa_transmit_task.o: ../Tasks/Movement/../../config.h
+objects\vofa_transmit_task.o: ../Tasks/Movement/../../Hardwares/config.h
 objects\vofa_transmit_task.o: ../Hardwares/M3508/m3508.h
 objects\vofa_transmit_task.o: ../Core/Inc/can.h
-objects\vofa_transmit_task.o: ../Hardwares/config.h
 objects\vofa_transmit_task.o: ../Hardwares/I2c_Soft/soft_i2c.h

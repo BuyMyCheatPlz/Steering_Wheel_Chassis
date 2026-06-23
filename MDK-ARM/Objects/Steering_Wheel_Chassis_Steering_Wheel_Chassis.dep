@@ -83,7 +83,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h)(0x69DDCDAF)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x69DDCDAF)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x69DDCDAF)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x69DDCDAF)
-F (../Core/Src/freertos.c)(0x6A38CEFD)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Hardwares -I ../Hardwares/M3508 -I ../Hardwares/MT6701 -I ../Hardwares/Dbus_Remote_Control -I ../Hardwares/I2c_Soft -I ../Hardwares/Vofa_Send -I ../Tasks/Movement -I ../Tasks/Remote_Control -I ../Tasks/Vofa_Transmit-I.\RTE\_Steering_Wheel_Chassis-IC:\Users\wangy\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-D__UVISION_VERSION="534" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o objects\freertos.o --omf_browse objects\freertos.crf --depend objects\freertos.d)
+F (../Core/Src/freertos.c)(0x6A3A0089)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Hardwares -I ../Hardwares/M3508 -I ../Hardwares/MT6701 -I ../Hardwares/Dbus_Remote_Control -I ../Hardwares/I2c_Soft -I ../Hardwares/Vofa_Send -I ../Tasks/Movement -I ../Tasks/Remote_Control -I ../Tasks/Vofa_Transmit-I.\RTE\_Steering_Wheel_Chassis-IC:\Users\wangy\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-D__UVISION_VERSION="534" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o objects\freertos.o --omf_browse objects\freertos.crf --depend objects\freertos.d)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x69DDCD3B)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5E8E3CC2)
 I (C:\Keil_v5\ARM\ARMCC\include\stdint.h)(0x5E8E3CC2)
@@ -134,6 +134,7 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h)(0x69DDCD3B)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h)(0x69DDCD3B)
 I (../Core/Inc/usart.h)(0x6A38A59A)
 I (../Tasks/Vofa_Transmit/vofa_transmit_task.h)(0x6A38C59B)
+I (../Core/Src/../../Hardwares/config.h)(0x6A3A0079)
 F (../Core/Src/can.c)(0x6A38A59A)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Hardwares -I ../Hardwares/M3508 -I ../Hardwares/MT6701 -I ../Hardwares/Dbus_Remote_Control -I ../Hardwares/I2c_Soft -I ../Hardwares/Vofa_Send -I ../Tasks/Movement -I ../Tasks/Remote_Control -I ../Tasks/Vofa_Transmit-I.\RTE\_Steering_Wheel_Chassis-IC:\Users\wangy\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-D__UVISION_VERSION="534" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o objects\can.o --omf_browse objects\can.crf --depend objects\can.d)
 I (../Core/Inc/can.h)(0x6A38A59A)
 I (../Core/Inc/main.h)(0x6A38A59A)
@@ -370,7 +371,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x69DDCDAF)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x69DDCDAF)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x69DDCDAF)
 I (../Core/Inc/usart.h)(0x6A38A59A)
-I (../Hardwares/config.h)(0x6A38CD12)
+I (../Hardwares/config.h)(0x6A3A0079)
 I (C:\Keil_v5\ARM\ARMCC\include\string.h)(0x5E8E3CC2)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E8E3CC2)
 F (..\Hardwares\I2c_Soft\soft_i2c.c)(0x6A38C692)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Hardwares -I ../Hardwares/M3508 -I ../Hardwares/MT6701 -I ../Hardwares/Dbus_Remote_Control -I ../Hardwares/I2c_Soft -I ../Hardwares/Vofa_Send -I ../Tasks/Movement -I ../Tasks/Remote_Control -I ../Tasks/Vofa_Transmit-I.\RTE\_Steering_Wheel_Chassis-IC:\Users\wangy\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-D__UVISION_VERSION="534" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o objects\soft_i2c.o --omf_browse objects\soft_i2c.crf --depend objects\soft_i2c.d)
@@ -442,7 +443,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x69DDCDAF)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x69DDCDAF)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x69DDCDAF)
 I (../Core/Inc/can.h)(0x6A38A59A)
-I (../Hardwares/config.h)(0x6A38CD12)
+I (../Hardwares/config.h)(0x6A3A0079)
 F (..\Hardwares\MT6701\mt6701.c)(0x6A38C59A)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Hardwares -I ../Hardwares/M3508 -I ../Hardwares/MT6701 -I ../Hardwares/Dbus_Remote_Control -I ../Hardwares/I2c_Soft -I ../Hardwares/Vofa_Send -I ../Tasks/Movement -I ../Tasks/Remote_Control -I ../Tasks/Vofa_Transmit-I.\RTE\_Steering_Wheel_Chassis-IC:\Users\wangy\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-D__UVISION_VERSION="534" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o objects\mt6701.o --omf_browse objects\mt6701.crf --depend objects\mt6701.d)
 I (..\Hardwares\MT6701\mt6701.h)(0x6A38C59A)
 I (../Hardwares/I2c_Soft/soft_i2c.h)(0x6A38C489)
@@ -561,13 +562,12 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x69DDCDAF)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x69DDCDAF)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x69DDCDAF)
 I (../Hardwares/Vofa_Send/vofa_send.h)(0x6A38C481)
-I (../Tasks/Movement/steering_chassis.h)(0x6A38DB5C)
-I (../Tasks/Movement/../../config.h)(0x6A38CD12)
+I (../Tasks/Movement/steering_chassis.h)(0x6A39FC2F)
+I (../Tasks/Movement/../../Hardwares/config.h)(0x6A3A0079)
 I (../Hardwares/M3508/m3508.h)(0x6A38C488)
 I (../Core/Inc/can.h)(0x6A38A59A)
-I (../Hardwares/config.h)(0x6A38CD12)
 I (../Hardwares/I2c_Soft/soft_i2c.h)(0x6A38C489)
-F (..\Tasks\Remote_Control\remote_control_task.c)(0x6A38DB53)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Hardwares -I ../Hardwares/M3508 -I ../Hardwares/MT6701 -I ../Hardwares/Dbus_Remote_Control -I ../Hardwares/I2c_Soft -I ../Hardwares/Vofa_Send -I ../Tasks/Movement -I ../Tasks/Remote_Control -I ../Tasks/Vofa_Transmit-I.\RTE\_Steering_Wheel_Chassis-IC:\Users\wangy\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-D__UVISION_VERSION="534" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o objects\remote_control_task.o --omf_browse objects\remote_control_task.crf --depend objects\remote_control_task.d)
+F (..\Tasks\Remote_Control\remote_control_task.c)(0x6A3A009D)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Hardwares -I ../Hardwares/M3508 -I ../Hardwares/MT6701 -I ../Hardwares/Dbus_Remote_Control -I ../Hardwares/I2c_Soft -I ../Hardwares/Vofa_Send -I ../Tasks/Movement -I ../Tasks/Remote_Control -I ../Tasks/Vofa_Transmit-I.\RTE\_Steering_Wheel_Chassis-IC:\Users\wangy\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-D__UVISION_VERSION="534" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o objects\remote_control_task.o --omf_browse objects\remote_control_task.crf --depend objects\remote_control_task.d)
 I (..\Tasks\Remote_Control\remote_control_task.h)(0x6A38DF57)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x69DDCD3B)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5E8E3CC2)
@@ -616,13 +616,12 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x69DDCDAF)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x69DDCDAF)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x69DDCDAF)
 I (../Hardwares/Dbus_Remote_Control/remote_control.h)(0x6A38C487)
-I (../Hardwares/config.h)(0x6A38CD12)
-I (../Tasks/Movement/steering_chassis.h)(0x6A38DB5C)
-I (../Tasks/Movement/../../config.h)(0x6A38CD12)
+I (../Hardwares/config.h)(0x6A3A0079)
+I (../Tasks/Movement/steering_chassis.h)(0x6A39FC2F)
 I (../Hardwares/M3508/m3508.h)(0x6A38C488)
 I (../Core/Inc/can.h)(0x6A38A59A)
 I (../Hardwares/I2c_Soft/soft_i2c.h)(0x6A38C489)
-F (..\Tasks\Movement\movement_task.c)(0x6A38D684)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Hardwares -I ../Hardwares/M3508 -I ../Hardwares/MT6701 -I ../Hardwares/Dbus_Remote_Control -I ../Hardwares/I2c_Soft -I ../Hardwares/Vofa_Send -I ../Tasks/Movement -I ../Tasks/Remote_Control -I ../Tasks/Vofa_Transmit-I.\RTE\_Steering_Wheel_Chassis-IC:\Users\wangy\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-D__UVISION_VERSION="534" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o objects\movement_task.o --omf_browse objects\movement_task.crf --depend objects\movement_task.d)
+F (..\Tasks\Movement\movement_task.c)(0x6A3A0094)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Hardwares -I ../Hardwares/M3508 -I ../Hardwares/MT6701 -I ../Hardwares/Dbus_Remote_Control -I ../Hardwares/I2c_Soft -I ../Hardwares/Vofa_Send -I ../Tasks/Movement -I ../Tasks/Remote_Control -I ../Tasks/Vofa_Transmit-I.\RTE\_Steering_Wheel_Chassis-IC:\Users\wangy\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-D__UVISION_VERSION="534" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o objects\movement_task.o --omf_browse objects\movement_task.crf --depend objects\movement_task.d)
 I (..\Tasks\Movement\movement_task.h)(0x6A38DF4D)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x69DDCD3B)
 I (C:\Keil_v5\ARM\ARMCC\include\stddef.h)(0x5E8E3CC2)
@@ -668,13 +667,12 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h)(0x69DDCDAF)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x69DDCDAF)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x69DDCDAF)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x69DDCDAF)
-I (..\Tasks\Movement\steering_chassis.h)(0x6A38DB5C)
-I (..\Tasks\Movement\../../config.h)(0x6A38CD12)
+I (..\Tasks\Movement\steering_chassis.h)(0x6A39FC2F)
+I (..\Tasks\Movement\../../Hardwares/config.h)(0x6A3A0079)
 I (../Hardwares/M3508/m3508.h)(0x6A38C488)
-I (../Hardwares/config.h)(0x6A38CD12)
 I (../Hardwares/I2c_Soft/soft_i2c.h)(0x6A38C489)
-F (..\Tasks\Movement\steering_chassis.c)(0x6A38DF65)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Hardwares -I ../Hardwares/M3508 -I ../Hardwares/MT6701 -I ../Hardwares/Dbus_Remote_Control -I ../Hardwares/I2c_Soft -I ../Hardwares/Vofa_Send -I ../Tasks/Movement -I ../Tasks/Remote_Control -I ../Tasks/Vofa_Transmit-I.\RTE\_Steering_Wheel_Chassis-IC:\Users\wangy\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-D__UVISION_VERSION="534" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o objects\steering_chassis.o --omf_browse objects\steering_chassis.crf --depend objects\steering_chassis.d)
-I (..\Tasks\Movement\steering_chassis.h)(0x6A38DB5C)
+F (..\Tasks\Movement\steering_chassis.c)(0x6A3A00AA)(--c99 -c --cpu Cortex-M4.fp.sp -g -O3 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Hardwares -I ../Hardwares/M3508 -I ../Hardwares/MT6701 -I ../Hardwares/Dbus_Remote_Control -I ../Hardwares/I2c_Soft -I ../Hardwares/Vofa_Send -I ../Tasks/Movement -I ../Tasks/Remote_Control -I ../Tasks/Vofa_Transmit-I.\RTE\_Steering_Wheel_Chassis-IC:\Users\wangy\AppData\Local\Arm\Packs\ARM\CMSIS\5.7.0\CMSIS\Core\Include-D__UVISION_VERSION="534" -D_RTE_ -DSTM32F405xx -D_RTE_ -DUSE_HAL_DRIVER -DSTM32F405xx-o objects\steering_chassis.o --omf_browse objects\steering_chassis.crf --depend objects\steering_chassis.d)
+I (..\Tasks\Movement\steering_chassis.h)(0x6A39FC2F)
 I (../Core/Inc/main.h)(0x6A38A59A)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x69DDCDAF)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x6A38A59A)
@@ -707,10 +705,9 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h)(0x69DDCDAF)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x69DDCDAF)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x69DDCDAF)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x69DDCDAF)
-I (..\Tasks\Movement\../../config.h)(0x6A38CD12)
+I (..\Tasks\Movement\../../Hardwares/config.h)(0x6A3A0079)
 I (../Hardwares/M3508/m3508.h)(0x6A38C488)
 I (../Core/Inc/can.h)(0x6A38A59A)
-I (../Hardwares/config.h)(0x6A38CD12)
 I (../Hardwares/I2c_Soft/soft_i2c.h)(0x6A38C489)
 I (../Hardwares/MT6701/mt6701.h)(0x6A38C59A)
 I (C:\Keil_v5\ARM\ARMCC\include\math.h)(0x5E8E3CC2)
