@@ -126,7 +126,7 @@ void SteeringChassis_SetVelocity(float vx, float vy, float wz);
 void SteeringChassis_EmergencyStop(void);
 
 /**
-  * @brief  急停恢复确认 (N1 修复)
+  * @brief  急停恢复确认
   * @note   由遥控任务在检测到 SW1=UP 时调用
   *         从 CHASSIS_ESTOP_RECOVER 切回 CHASSIS_HOMING 重新回正
   */

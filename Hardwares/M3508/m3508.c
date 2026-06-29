@@ -76,13 +76,8 @@ void M3508_Init(CAN_HandleTypeDef *hcan)
     sFilterConfig.FilterScale          = CAN_FILTERSCALE_32BIT;
     sFilterConfig.FilterIdHigh         = 0x201 << 5;    /* Filter[31:16]: STDID=0x201 */
     sFilterConfig.FilterIdLow          = 0x0000;         /* Filter[15:0]: IDE=0, RTR=0 */
-    /*
-     * H1 修复: FilterMaskIdHigh 0x00FF → 0x01FF
-     * 原掩码仅忽略 STDID[2:0]，匹配范围 0x200-0x207
-     * 电机 8 反馈帧 0x208 的 STDID[3]=1 被遗漏
-     * 改为忽略 STDID[3:0] 后硬件匹配 0x200-0x20F，
-     * 软件层 M3508_RxCallback 再做精确过滤 (0x201-0x208)
-     */
+    /* FilterMaskIdHigh 0x01FF: 忽略 STDID[3:0]，硬件匹配 0x200-0x20F，
+     * 软件层 M3508_RxCallback 再做精确过滤 (0x201-0x208) */
     sFilterConfig.FilterMaskIdHigh     = 0x01FF;
     sFilterConfig.FilterMaskIdLow      = 0xFFF8;         /* Mask[15:3]=1忽略EXID, [2:1]=0匹配IDE/RTR */
     sFilterConfig.FilterFIFOAssignment = CAN_FILTER_FIFO0;

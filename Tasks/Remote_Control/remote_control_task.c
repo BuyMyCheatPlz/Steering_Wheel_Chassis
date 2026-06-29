@@ -36,21 +36,8 @@ void RemoteControlTask_Init(void)
 /**
   * @brief  遥控信号处理任务入口
   * @note   等待 DBUS 帧解析完成信号量，映射通道值到底盘速度
+ *         10ms 超时：即使无 DBUS 帧也每周期执行失联保护检查
   *
-  *         修复 P1-3:
-  *           原代码将 RemoteControl_LossProtectionTick() 调用放在
-  *           if (rc_state.connected) 块内，导致从未连上遥控器时
-  *           失联保护状态机永远不会被调用，急停失效。
-  *           修复后: 无论 rc_state.connected 为何，每周期都调用
-  *           LossProtectionTick，确保失联状态机独立运行。
-  *
-  *         修复 P2 (2024 诊断):
-  *           osWaitForever → 10ms 超时。原代码用 osWaitForever 阻塞等待
-  *           DBUS 帧信号量，遥控器失联后不再有帧 → 任务永久阻塞 →
-  *           LossProtectionTick 永远不被调用 → 急停失效。
-  *           改为 10ms 超时后，即使无 DBUS 帧，任务也每 10ms 唤醒一次
-  *           执行失联保护检查（REMOTE_TIMEOUT_MS=50ms 超时判定失联，
-  *           REMOTE_ESTOP_HOLD_MS=200ms 后关断电流）。
   */
 void Receive_and_Process_Signal(void *argument)
 {
@@ -67,18 +54,18 @@ void Receive_and_Process_Signal(void *argument)
         RemoteControl_GetState(&rc_state);
 
         /*
-         * P1-3 修复: LossProtectionTick 移到外层调用
-         * 不依赖 rc_state.connected，确保即使从未连接也能触发急停
+         * LossProtectionTick 不依赖 rc_state.connected，
+         * 确保即使从未连接也能触发急停
          */
         uint8_t loss = RemoteControl_LossProtectionTick();
 
         if (loss == 0)
         {
             /*
-             * N1 修复: 急停恢复确认
+             * 急停恢复确认
              * 编码器已恢复 + 收到新 DBUS 帧 + 遥控器在线 + SW1拨到UP → 确认恢复
              *
-             * H2 修复: 增加 status == osOK 条件
+             * 要求 status == osOK 确保收到新帧
              * cached_state.connected 从未被清零，失联后保持旧值 1
              * 若不要求新帧，stale 数据即可触发恢复，绕过手动确认的安全设计
              */

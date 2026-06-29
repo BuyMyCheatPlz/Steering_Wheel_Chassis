@@ -200,11 +200,8 @@ void RemoteControl_IdleCallback(UART_HandleTypeDef *huart)
 void RemoteControl_GetState(RemoteState *state)
 {
     if (state != NULL) {
-        /*
-         * P0-2 修复: 临界区保护
-         * cached_state 可能被 ISR 中的 RemoteControl_IdleCallback 并发写入,
-         * 此处禁用中断确保 memcpy 读到一致的状态 (Cortex-M4 上的原子性读)
-         */
+        /* 临界区保护: cached_state 可能被 ISR 并发写入,
+         * 禁用中断确保 memcpy 读到一致的状态 */
         uint32_t primask = __get_PRIMASK();
         __disable_irq();
         memcpy(state, &cached_state, sizeof(RemoteState));

@@ -4,7 +4,6 @@
   * @brief          : 舵轮底盘控制实现
   * @description    : 运动学解算 + 编码器读取 + 串级 PID + 电流控制
   *                   + 上电回正状态机 + 急停恢复机制
-  *                   (P0/P1/P2 修复版 — 2024 诊断审查后)
   ******************************************************************************
   */
 
@@ -55,17 +54,15 @@ static const float g_steer_offsets[WHEEL_COUNT] = {
 };
 
 /*
- * P0-1 修复: PID 控制器改为每轮独立实例
  *
  * 原代码: PID_Controller g_steer_pos_pid;  (4 轮共享)
  * 问题:   ComputeSteerPID(0) 写入 integral → ComputeSteerPID(1) 读到被污染的积分
- * 修复:   改为数组，每轮独立 PID 状态
  */
 static PID_Controller g_steer_pos_pid[WHEEL_COUNT]; /* 舵向位置环 ×4 */
 static PID_Controller g_steer_vel_pid[WHEEL_COUNT]; /* 舵向速度环 ×4 */
 static PID_Controller g_drive_vel_pid[WHEEL_COUNT]; /* 驱动速度环 ×4 */
 
-/* H1 修复: 回正 PID 改为每轮独立实例，防止 4 轮共用导致积分交叉污染 */
+/* 回正 PID 每轮独立实例 */
 static PID_Controller g_homing_pos_pid[WHEEL_COUNT];
 
 /* 急停恢复：编码器连续健康次数计数器 */
@@ -141,10 +138,7 @@ void SteeringChassis_Init(SoftI2C_Bus *i2c_buses[4],
             NormalizeAngle(raw_deg - g_steer_offsets[i]);
     }
 
-    /*
-     * P0-1 修复: 初始化 12 个独立 PID 实例 (3组 × 4轮)
-     * 每轮使用独立的 Kp/Ki/Kd（config.h 中可独立配置，适配不同减速比）
-     */
+    /* 初始化 12 个独立 PID 实例 (3组 × 4轮)，每轮独立 Kp/Ki/Kd */
     const float steer_pos_kp[WHEEL_COUNT] = {
         STEER_POS_KP_1, STEER_POS_KP_2, STEER_POS_KP_3, STEER_POS_KP_4
     };
@@ -175,7 +169,7 @@ void SteeringChassis_Init(SoftI2C_Bus *i2c_buses[4],
 
     for (i = 0; i < WHEEL_COUNT; i++)
     {
-        /* H3 修复: 启用 STEER_DEADBAND_DEG 死区 */
+        /* 启用 STEER_DEADBAND_DEG 死区 */
         PID_Init(&g_steer_pos_pid[i],
                  steer_pos_kp[i], steer_pos_ki[i], steer_pos_kd[i],
                  STEER_POS_INTEGRAL_MAX, STEER_POS_OUTPUT_MAX,
@@ -191,10 +185,6 @@ void SteeringChassis_Init(SoftI2C_Bus *i2c_buses[4],
     }
 
     /*
-     * H1 修复: 每轮回正 PID 独立实例
-     * 可以用较温和的 Kp 防止到位过冲
-     * 位置环输出限幅也缩小为正常的一半
-     * H3 修复: 启用 STEER_DEADBAND_DEG 死区
      */
     for (i = 0; i < WHEEL_COUNT; i++)
     {
@@ -241,7 +231,7 @@ void SteeringChassis_EmergencyStop(void)
         g_wheel[i].drive_current_prev = 0;
     }
 
-    /* 清零全部 PID 积分 — 防止急停期间 windup (P2-7: 用 PID_Reset) */
+    /* 清零全部 PID 积分 — 防止急停期间 windup  */
     for (i = 0; i < WHEEL_COUNT; i++)
     {
         PID_Reset(&g_steer_pos_pid[i]);
@@ -272,9 +262,6 @@ ChassisState SteeringChassis_GetState(void)
 
 /**
   * @brief  检查回正是否完成
-  * @note   P2-8 修复: 原代码 return (g_state != CHASSIS_HOMING)
-  *         急停时也返回 true，语义不精确
-  *         修正为仅在 NORMAL 状态返回 true
   */
 uint8_t SteeringChassis_IsHomingDone(void)
 {
@@ -282,7 +269,7 @@ uint8_t SteeringChassis_IsHomingDone(void)
 }
 
 /**
-  * @brief  重置 PID 控制器 (P2-7: 新增函数)
+  * @brief  重置 PID 控制器 
   * @note   同时清零积分累计和上次误差，防止模式切换时虚假 D 项跳变
   */
 void PID_Reset(PID_Controller *pid)
@@ -295,7 +282,7 @@ void PID_Reset(PID_Controller *pid)
 }
 
 /**
-  * @brief  检查编码器是否全部恢复健康 (P1-4: 急停恢复用)
+  * @brief  检查编码器是否全部恢复健康 
   * @retval 1: 全部编码器连续 N 次读取成功, 0: 未恢复
   */
 uint8_t SteeringChassis_IsEncoderHealthy(void)
@@ -320,7 +307,7 @@ uint8_t SteeringChassis_IsEncoderHealthy(void)
 }
 
 /**
-  * @brief  急停恢复确认 (N1 修复)
+  * @brief  急停恢复确认 
   * @note   由遥控任务在检测到 SW1=UP 时调用
   *         从 CHASSIS_ESTOP_RECOVER 切回 CHASSIS_HOMING 重新回正
   */
@@ -359,7 +346,7 @@ void SteeringChassis_ControlLoop(void)
         }
         SendMotorCurrents();
 
-        /* N1 修复: 每周期检查编码器是否恢复健康 */
+        /* 每周期检查编码器是否恢复健康 */
         if (SteeringChassis_IsEncoderHealthy())
         {
             g_state = CHASSIS_ESTOP_RECOVER;
@@ -368,11 +355,6 @@ void SteeringChassis_ControlLoop(void)
 
     case CHASSIS_ESTOP_RECOVER:
         /*
-         * P1-4 修复: 急停恢复状态
-         * 每周期检查编码器健康状态，达标后等待遥控器 SW1=UP 确认
-         * 确认后重新回正 → 进入正常模式
-         *
-         * 注意: 恢复条件由遥控任务层判断，此处仅发送零电流等待
          */
         for (i = 0; i < WHEEL_COUNT; i++)
         {
@@ -395,7 +377,7 @@ void SteeringChassis_ControlLoop(void)
             /* 驱动电机静止 */
             g_wheel[i].drive_current_out = 0;
 
-            /* P2-10 修复: 舵向编码器无效 → 发送零电流，不保持旧电流 */
+            /* 舵向编码器无效 → 发送零电流，不保持旧电流 */
             if (!g_wheel[i].encoder_valid)
             {
                 g_wheel[i].steer_current_out = 0;
@@ -413,7 +395,7 @@ void SteeringChassis_ControlLoop(void)
                 all_done = 0;
             }
 
-            /* H1 修复: 位置环 -> 目标转速 (每轮独立回正 PID) */
+            /* 位置环 -> 目标转速 (每轮独立回正 PID) */
             vel_target = PID_Compute(&g_homing_pos_pid[i], error, CONTROL_DT);
 
             /* 速度环 -> 电流 (回正复用 g_steer_vel_pid) */
@@ -437,7 +419,7 @@ void SteeringChassis_ControlLoop(void)
                 PID_Reset(&g_steer_pos_pid[i]);
                 PID_Reset(&g_steer_vel_pid[i]);
                 PID_Reset(&g_drive_vel_pid[i]);
-                /* H1 修复: 回正 PID 也需清零 */
+                /* 回正 PID 也需清零 */
                 PID_Reset(&g_homing_pos_pid[i]);
             }
             g_state = CHASSIS_NORMAL;
@@ -634,7 +616,7 @@ static void ReadMotorFeedback(void)
   *         目标舵角 = atan2(V_iy, V_ix)
   *         目标轮速 = |V_i| / R_wheel -> rpm (WHEEL_RADIUS 来自 config.h)
   *
-  *         最短路径优化 (P1-5 修复: 增加滞回):
+  *         最短路径优化 :
   *           若 |目标舵角 - 当前舵角| > 95°, 进入反转
   *           若已反转且 |误差| < 85°, 退出反转
   *           反转驱动轮方向，目标舵角转 180°
@@ -649,7 +631,7 @@ static void InverseKinematics(void)
     const float wheel_x[WHEEL_COUNT] = {  a,  a, -a, -a };
     const float wheel_y[WHEEL_COUNT] = {  b, -b,  b, -b };
 
-    /* P2-9 修复: 驱动减速比 (电机转数 / 车轮转数) */
+    /* 驱动减速比 (电机转数 / 车轮转数) */
     const float drive_ratio[WHEEL_COUNT] = {
         REDUCTION_DRIVE_1, REDUCTION_DRIVE_2,
         REDUCTION_DRIVE_3, REDUCTION_DRIVE_4
@@ -674,7 +656,7 @@ static void InverseKinematics(void)
         /*
          * 线速度 (m/s) -> rpm
          * rpm = (v / (2πR)) * 60
-         * P2-9 修复: 乘以减速比 drive_ratio[i]
+         * 乘以减速比 drive_ratio[i]
          * 车轮半径 WHEEL_RADIUS 在 config.h 中配置
          */
         g_wheel[i].target_drive_speed = speed *
@@ -701,7 +683,7 @@ static void InverseKinematics(void)
             g_wheel[i].target_steer_angle =
                 NormalizeAngle(angle_rad * RAD2DEG);
 
-            /* ─── 最短路径优化 (P1-5 修复: 施密特滞回) ───────
+            /* ─── 最短路径优化  ───────
              * 使用 g_wheel[i].inverted 标志位 + 滞回阈值
              * 进入反转需 > STEER_HYST_ENTER (95°)
              * 退出反转需 < STEER_HYST_EXIT (85°)
@@ -737,7 +719,7 @@ static void InverseKinematics(void)
 /**
   * @brief  舵向串级 PID
   *         外环(位置) -> 目标转速 -> 内环(速度) -> 电流输出
-  * @note   P0-1 修复: 使用 g_steer_pos_pid[wheel_idx] 独立实例
+  * @note   使用 g_steer_pos_pid[wheel_idx] 独立实例
   */
 static void ComputeSteerPID(uint8_t wheel_idx)
 {
@@ -750,8 +732,6 @@ static void ComputeSteerPID(uint8_t wheel_idx)
     g_wheel[wheel_idx].steer_pos_error = error;
 
     /*
-     * P2-10 修复: 编码器无效时设 steer_current_out = 0
-     * 而不是保持上一周期电流（避免舵角锁死在坏位置）
      */
     if (!g_wheel[wheel_idx].encoder_valid)
     {
@@ -759,7 +739,7 @@ static void ComputeSteerPID(uint8_t wheel_idx)
         return;
     }
 
-    /* P0-1 修复: 使用独立 PID 实例 */
+    /* 使用独立 PID 实例 */
     vel_target = PID_Compute(&g_steer_pos_pid[wheel_idx], error, CONTROL_DT);
 
     g_wheel[wheel_idx].steer_vel_target = vel_target;
@@ -773,7 +753,7 @@ static void ComputeSteerPID(uint8_t wheel_idx)
 
 /**
   * @brief  驱动速度 PID
-  * @note   P0-1 修复: 使用 g_drive_vel_pid[wheel_idx] 独立实例
+  * @note   使用 g_drive_vel_pid[wheel_idx] 独立实例
   */
 static void ComputeDrivePID(uint8_t wheel_idx)
 {

@@ -17,9 +17,7 @@ extern osMessageQueueId_t Signal_QueueHandle;
 /* Private variables ---------------------------------------------------------*/
 static uint8_t initialized = 0;
 
-/*==============================================================================
- * 公共函数实现
- *============================================================================*/
+/*公共函数实现*/
 
 /**
   * @brief  底盘运动控制初始化
@@ -41,7 +39,7 @@ void Movement_Init(void)
 
 /**
   * @brief  运动控制任务入口
-  * @note   H2 修复: 使用 vTaskDelayUntil 精确控制周期
+  * @note   使用 vTaskDelayUntil 精确控制周期
   *         周期由 control_period_ms (CONTROL_PERIOD_MS) 定义, 与 CONTROL_DT 一致
   */
 void Motor_Movement(void *argument)
